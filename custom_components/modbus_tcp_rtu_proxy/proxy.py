@@ -34,6 +34,7 @@ LOGGER = logging.getLogger(__name__)
 
 MODBUS_EXCEPTION_INVALID_RESPONSE = 0x04
 MODBUS_EXCEPTION_GATEWAY_TARGET_FAILED = 0x0B
+MODBUS_RTU_BROADCAST_UNIT_ID = 0
 WRITER_CLOSE_TIMEOUT = 2.0
 
 
@@ -153,7 +154,9 @@ class RtuBridge:
             if not has_valid_crc(response):
                 raise ValueError(f"Invalid RTU CRC: {response.hex(' ')}")
 
-            if response[0] != unit_id:
+            if response[0] == MODBUS_RTU_BROADCAST_UNIT_ID:
+                LOGGER.debug("RTU response used unit id 0 for request unit id %s", unit_id)
+            elif response[0] != unit_id:
                 raise ValueError(f"RTU unit id {response[0]} does not match request unit id {unit_id}")
 
             return response[1:-2]

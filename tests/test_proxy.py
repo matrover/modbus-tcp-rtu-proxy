@@ -105,6 +105,22 @@ class ModbusTcpRtuProxyTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.rtu_requests, [append_crc(bytes((1,)) + pdu)])
         self.assertEqual(response, struct.pack(">HHHB", 42, 0, 6, 1) + pdu)
 
+    async def test_accepts_unit_zero_rtu_response(self):
+        async def handle_rtu(reader, writer):
+            request = await reader.readexactly(8)
+            self.rtu_requests.append(request)
+            writer.write(append_crc(bytes.fromhex("00 03 02 12 34")))
+            await writer.drain()
+            writer.close()
+
+        await self._start_proxy(handle_rtu)
+
+        pdu = bytes.fromhex("03 a8 66 00 01")
+        response = await self._send_tcp_request(pdu)
+
+        self.assertEqual(self.rtu_requests, [append_crc(bytes((1,)) + pdu)])
+        self.assertEqual(response, struct.pack(">HHHB", 42, 0, 5, 1) + bytes.fromhex("03 02 12 34"))
+
     async def test_invalid_crc_returns_exception_04(self):
         async def handle_rtu(reader, writer):
             await reader.readexactly(8)
