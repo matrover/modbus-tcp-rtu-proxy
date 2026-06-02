@@ -1,0 +1,46 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Modbus TCP RTU Proxy",
+        "description": "Expose a Modbus TCP listener and forward requests to a transparent TCP-to-RS485 adapter.",
+        "data": {
+          "name": "Name",
+          "listen_host": "Listen host",
+          "listen_port": "Listen port",
+          "rtu_host": "RTU adapter host",
+          "rtu_port": "RTU adapter port",
+          "request_timeout": "Request timeout",
+          "inter_request_delay_ms": "Inter request delay",
+          "max_clients": "Maximum clients",
+          "log_level": "Log level"
+        }
+      }
+    },
+    "error": {
+      "rtu_host_required": "RTU adapter host is required."
+    },
+    "abort": {
+      "already_configured": "A proxy is already configured for this listen host and port."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Modbus TCP RTU Proxy options",
+        "data": {
+          "name": "Name",
+          "listen_host": "Listen host",
+          "listen_port": "Listen port",
+          "rtu_host": "RTU adapter host",
+          "rtu_port": "RTU adapter port",
+          "request_timeout": "Request timeout",
+          "inter_request_delay_ms": "Inter request delay",
+          "max_clients": "Maximum clients",
+          "log_level": "Log level"
+        }
+      }
+    }
+  }
+}
+
