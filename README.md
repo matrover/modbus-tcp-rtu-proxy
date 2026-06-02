@@ -2,6 +2,9 @@
 
 A Home Assistant custom integration that exposes a Modbus TCP listener and forwards requests to a transparent TCP-to-RS485 adapter as Modbus RTU frames.
 
+[![Open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=matrover&repository=modbus-tcp-rtu-proxy&category=integration)
+[![Add this integration to Home Assistant.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=modbus_tcp_rtu_proxy)
+
 Use this when a device expects Modbus TCP, but your RS485 adapter only provides a raw TCP serial stream.
 
 ```text
@@ -38,12 +41,12 @@ Default values:
 For a Solis inverter through a transparent Waveshare TCP-to-RS485 adapter:
 
 ```text
-Home Assistant solis_modbus -> HA host:1502 -> proxy -> Waveshare 192.168.20.107:8899 -> Solis RS485
+Home Assistant solis_modbus -> HA host:1502 -> proxy -> Waveshare <adapter-ip>:8899 -> Solis RS485
 ```
 
 Configure this integration:
 
-- RTU host: `192.168.20.107`
+- RTU host: the Waveshare adapter IP address
 - RTU port: `8899`
 - Listen port: `1502`
 
@@ -61,4 +64,3 @@ Keep the Waveshare in transparent TCP server mode.
 - The proxy serializes all RTU traffic because RS485 is half-duplex.
 - RTU timeouts are returned as Modbus exception `0x0B`.
 - Invalid RTU responses are returned as Modbus exception `0x04`.
-
